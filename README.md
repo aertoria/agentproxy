@@ -50,6 +50,16 @@ pip install agentproxy[server]
 pip install agentproxy[telemetry]
 ```
 
+### With Multi-Worker Support
+```bash
+pip install agentproxy[worker]
+```
+
+### Full Installation
+```bash
+pip install agentproxy[all]
+```
+
 ### Development Install
 ```bash
 git clone https://github.com/allenday/agentproxy
@@ -84,8 +94,14 @@ pa --add-screenshot design.png "Match this UI"
 pa --list-sessions
 
 # Set default working directory
-pa --set-workdir ./myproject "Fix bug"
+pa --set-workdir ./myproject
 pa --show-workdir
+
+# Set project context directory (coding standards, guidelines)
+pa --set-contextdir ./docs
+
+# Skip verification or QA
+pa --no-verify --no-qa "Quick task"
 
 # Or use python -m
 python -m agentproxy "Create a REST API"
@@ -123,6 +139,26 @@ curl -N -X POST http://localhost:8000/task \
 curl http://localhost:8000/health
 curl http://localhost:8000/sessions
 ```
+
+### Mode 3: Multi-Worker
+
+For distributed task execution using Celery and Redis:
+
+```bash
+# Start a worker (listens on 'default' queue)
+pa-worker
+
+# Start a worker on a custom queue
+pa-worker --queue gpu-1
+
+# Start with multiple concurrent workers
+pa-worker --concurrency 4
+
+# Combine options
+pa-worker --queue high-priority --concurrency 2 --loglevel debug
+```
+
+**Requirements:** Redis server running (default: `redis://localhost:6379/0`)
 
 ## Observability with OpenTelemetry
 
@@ -218,6 +254,8 @@ Telemetry is **completely opt-in**:
 - Works without OTEL dependencies installed (gracefully degrades)
 
 ## Requirements
+
 - Python 3.9+
 - Claude CLI (`claude` command)
 - Gemini API key
+- Redis (only for multi-worker mode)
