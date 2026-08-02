@@ -17,7 +17,7 @@ attached artifacts, decide the next state transition.
 - verification_passed=true means code runs without errors.
 - Round deltas show lines_added/removed per round and output_similarity to prior round.
 - If recent rounds show lines_added=0 AND high output_similarity → Claude is stalling.
-- Vacuous verification ("no scripts found", "skipped") does NOT count as passed.
+- Vacuous verification ("no scripts found", "skipped") does NOT count as passed → STOP.
 - Look at TRAJECTORY across rounds: is Claude progressing or repeating?
 - If Claude is stuck in a loop with no recovery path → STOP.
 - If a fundamental error prevents task completion → ERROR.
